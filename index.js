@@ -4,14 +4,10 @@ const { Client } = require( 'whatsapp-web.js' );
 const express = require( "express" );
 
 const app = express();
-
-
-
+app.use( express.static( 'public' ) )
 const PORT = process.env.PORT || 5000;
 const client = new Client( {
 } );
-
-
 client.on( 'ready', () =>
 {
   console.log( 'Client is ready!' );
@@ -40,18 +36,21 @@ client.on( 'message', message =>
 
 app.get( "/", ( req, res ) =>
 {
+  res.send( '<h1 >Hello </h1>' )
+}
+)
+
+app.get( "/api", ( req, res ) =>
+{
   client.on( 'qr', qr =>
   {
     // qrcode.generate( qr, { small: true } );
-
-
-
     res.send( `deploy for vercel : ${ qr }` );
   } );
 
 } );
 
-app.listen( 5000, () =>
+app.listen( PORT, () =>
 {
   client.initialize();
   console.log( "Running on port 5000." );
